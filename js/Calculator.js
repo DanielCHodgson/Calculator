@@ -10,13 +10,11 @@ export default class Calculator {
         this.display = display;
         this.buttons = buttons;
 
-        buttons.forEach(btn => {
-            btn.addEventListener("click", function () {
-                //calc.operate(btn.id, btn.id, this.currentResult);
-                console.log("hello " + btn.id);
+        buttons.forEach(btn => btn.addEventListener("click", () => this.handleClick(btn)));
+    }
 
-            });
-        })
+    handleClick(btn) {
+        console.log(btn.id)
     }
 
     add(num1, num2) {
@@ -49,8 +47,9 @@ export default class Calculator {
         return this.currentResult;
     }
 
-    operate(operator, num1, num2) {
+    operate(operator, input, currentResult) {
 
+    
     }
 
 }
