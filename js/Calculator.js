@@ -1,9 +1,10 @@
+import { isTextOverflowingHorizontally } from "./utility.js";
 
 export default class Calculator {
 
     currentResult = null;
-    currentInput = null;
     display = null;
+    displayValue = null;
     buttons = null;
 
     constructor(display, buttons) {
@@ -14,7 +15,39 @@ export default class Calculator {
     }
 
     handleClick(btn) {
-        console.log(btn.id)
+
+        let currentInput = btn.id;
+
+        if (isNaN(parseInt(currentInput))) {
+
+            console.log(btn.id);
+
+        } else {
+            this.enterNumber(currentInput);
+        }
+    }
+
+
+    enterNumber(currentInput) {
+
+        if (this.displayValue === null) {
+            this.displayValue = currentInput;
+        } else {
+            
+            let oldDisplayValue = this.displayValue;
+            let newDisplayValue = oldDisplayValue + currentInput;
+            this.displayValue = newDisplayValue;
+
+            if(isTextOverflowingHorizontally(this.display)) {
+                this.displayValue = oldDisplayValue;
+            }
+        }
+
+        this.display.textContent = this.displayValue;
+    }
+
+    isTextOverflowing(element) {
+        return element.scrollHeight > element.clientHeight;  // For vertical overflow
     }
 
     add(num1, num2) {
@@ -49,7 +82,7 @@ export default class Calculator {
 
     operate(operator, input, currentResult) {
 
-    
+
     }
 
 }
