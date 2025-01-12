@@ -6,3 +6,5 @@ function run() {
     let btns = document.querySelectorAll("button");
     const calc = new Calculator(display, btns);
 }
+
+run();

@@ -53,12 +53,24 @@ body {
     font-size: 24px;
 }
 
+.btn-container button:active {
+    background-color: #05534f;
+}
+
 .btn-container .operator {
     background-color: #d87422;
 }
 
+.btn-container .operator:active {
+    background-color: #a04c07;
+}
+
 .btn-container .top {
     background-color: #129dc0;
+}
+
+.btn-container .top:active {
+    background-color: #056c86;
 }
 
 #zero {

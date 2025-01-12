@@ -10,10 +10,14 @@ export default class Calculator {
         this.display = display;
         this.buttons = buttons;
 
-        btns.forEach(btn => {
-            btn.addEventListener("click", calc.operate(btn.id, this.currentInput, this.currentResult));
+        buttons.forEach(btn => {
+            btn.addEventListener("click", function () {
+                //calc.operate(btn.id, btn.id, this.currentResult);
+                console.log("hello " + btn.id);
+
+            });
         })
-     }
+    }
 
     add(num1, num2) {
         if (!isNaN(num1 || !isNaN(num2)))
@@ -46,7 +50,7 @@ export default class Calculator {
     }
 
     operate(operator, num1, num2) {
-        
+
     }
 
 }
