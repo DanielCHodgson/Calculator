@@ -1,63 +1,60 @@
-import { doesTextFit } from "./utility.js";
+import { doesTextFit, isStringNum } from "./utility.js";
 
-export default class Calculator { 
+export default class Calculator {
 
-    currentResult = null;
     display = null;
-    currentDisplayValue = null;
     buttons = null;
+
+    currentOperator = null;
+    currentInput = null;
+    currentValue = "0";
 
     constructor(display, buttons) {
         this.display = display;
         this.buttons = buttons;
-
         buttons.forEach(btn => btn.addEventListener("click", () => this.handleClick(btn)));
     }
 
     handleClick(btn) {
 
-        let currentInput = btn.id;
-
+        if (btn.classList.contains("operator")) this.currentOperator = btn.id;
         if (btn.id === "clear") this.clear();
+        if (btn.id === "equals") this.equals();
+        if (btn.id === "decimal" &&
+            this.currentValue !== null &&
+            !this.currentValue.includes("."))
+            this.enterInput(".");
 
-        if (isNaN(parseInt(currentInput))) {
 
-            //console.log(btn.id);
+        if (isStringNum(btn.id)) {
+            /*
+        this.currentOperator
+            ? this.operate(btn.id, btn.id, this.currentValue)
+            : this.enterInput(btn.id);
 
-        } else {
-            this.enterNumber(currentInput);
+            */
+            this.enterInput(btn.id);
         }
+
+
     }
 
 
-    enterNumber(input) {
-
-        if (this.currentDisplayValue === null) {
-            this.currentDisplayValue = input;
-        } else {
-
-            let oldDisplayValue = this.currentDisplayValue;
-            let newDisplayValue = oldDisplayValue + input;
-
-            if (doesTextFit(this.display)) {
-                this.currentDisplayValue = newDisplayValue;
-
-            } else {
-                this.currentDisplayValue = oldDisplayValue
-            }
-        }
-
-        console.log("currentDisplayValue: " + this.currentDisplayValue);
-        this.display.textContent = this.currentDisplayValue;
+    enterInput(input) {
+        if (this.currentValue == "0") this.currentValue = "";
+        let newDisplayValue = this.currentValue + input;
+        if (doesTextFit(this.display)) this.currentValue = newDisplayValue;
+        this.display.textContent = this.currentValue;
     }
 
     clear() {
-        this.currentResult = null;
         this.display.textContent = 0;
-        this.currentDisplayValue = null;
+        this.currentValue = "0";
     }
 
     add(num1, num2) {
+
+        console.log(num1 + "  " + num2)
         if (!isNaN(num1 || !isNaN(num2)))
             return num1 + num2;
     };
@@ -84,13 +81,29 @@ export default class Calculator {
     }
 
     equals() {
-        this.currentResult = null;
-        this.display.textContent = 0;
-        this.currentDisplayValue = null;
+
     }
 
-    operate(operator, input, currentResult) {
+    operate(operator, input, currentValue) {
 
+
+        switch (operator) {
+            case "plus":
+
+                break;
+            case "minus":
+
+                break;
+            case "multiply":
+
+                break;
+            case "divide":
+
+                break;
+            case "percent":
+
+                break;
+        }
 
     }
 

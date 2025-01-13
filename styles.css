@@ -69,7 +69,7 @@ body {
     background-color: #05534f;
 }
 
-.btn-container .operator {
+.btn-container .operator, #sign, #clear, #equals {
     background-color: #d87422;
 }
 
@@ -85,6 +85,6 @@ body {
     background-color: #056c86;
 }
 
-#zero {
+#\30 {
     flex: 2 1 50%;
 }
