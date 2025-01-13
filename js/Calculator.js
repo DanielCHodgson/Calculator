@@ -45,8 +45,9 @@ export default class Calculator {
             } else {
                 this.currentDisplayValue = oldDisplayValue
             }
-            console.log("old display value:" + oldDisplayValue + "      new display value:" + newDisplayValue);
         }
+
+        console.log("currentDisplayValue: " + this.currentDisplayValue);
         this.display.textContent = this.currentDisplayValue;
     }
 
