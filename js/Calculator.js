@@ -1,10 +1,10 @@
-import { isTextOverflowingHorizontally } from "./utility.js";
+import { doesTextFit } from "./utility.js";
 
 export default class Calculator {
 
     currentResult = null;
     display = null;
-    displayValue = null;
+    currentDisplayValue = null;
     buttons = null;
 
     constructor(display, buttons) {
@@ -18,6 +18,8 @@ export default class Calculator {
 
         let currentInput = btn.id;
 
+        if(btn.id === "clear") this.clear();
+
         if (isNaN(parseInt(currentInput))) {
 
             console.log(btn.id);
@@ -30,24 +32,28 @@ export default class Calculator {
 
     enterNumber(currentInput) {
 
-        if (this.displayValue === null) {
-            this.displayValue = currentInput;
+        if (this.currentDisplayValue === null) {
+            this.currentDisplayValue = currentInput;
         } else {
-            
-            let oldDisplayValue = this.displayValue;
-            let newDisplayValue = oldDisplayValue + currentInput;
-            this.displayValue = newDisplayValue;
 
-            if(isTextOverflowingHorizontally(this.display)) {
-                this.displayValue = oldDisplayValue;
+            let oldDisplayValue = this.currentDisplayValue;
+            let newDisplayValue = oldDisplayValue + currentInput;
+            this.currentDisplayValue = newDisplayValue;
+
+            if (!doesTextFit(this.display)) {
+                this.currentDisplayValue = oldDisplayValue;
             }
         }
 
-        this.display.textContent = this.displayValue;
+        this.display.textContent = this.currentDisplayValue;
     }
 
-    isTextOverflowing(element) {
-        return element.scrollHeight > element.clientHeight;  // For vertical overflow
+    clear() {
+
+        this.currentResult = null;
+        this.display.textContent = 0;
+        this.currentDisplayValue = null;
+
     }
 
     add(num1, num2) {
@@ -77,7 +83,9 @@ export default class Calculator {
     }
 
     equals() {
-        return this.currentResult;
+        this.currentResult = null;
+        this.display.textContent = 0;
+        this.currentDisplayValue = null;
     }
 
     operate(operator, input, currentResult) {
