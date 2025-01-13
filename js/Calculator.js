@@ -1,6 +1,6 @@
 import { doesTextFit } from "./utility.js";
 
-export default class Calculator {
+export default class Calculator { 
 
     currentResult = null;
     display = null;
