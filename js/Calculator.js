@@ -49,11 +49,9 @@ export default class Calculator {
     }
 
     clear() {
-
         this.currentResult = null;
         this.display.textContent = 0;
         this.currentDisplayValue = null;
-
     }
 
     add(num1, num2) {
