@@ -18,11 +18,11 @@ export default class Calculator {
 
         let currentInput = btn.id;
 
-        if(btn.id === "clear") this.clear();
+        if (btn.id === "clear") this.clear();
 
         if (isNaN(parseInt(currentInput))) {
 
-            console.log(btn.id);
+            //console.log(btn.id);
 
         } else {
             this.enterNumber(currentInput);
@@ -30,21 +30,23 @@ export default class Calculator {
     }
 
 
-    enterNumber(currentInput) {
+    enterNumber(input) {
 
         if (this.currentDisplayValue === null) {
-            this.currentDisplayValue = currentInput;
+            this.currentDisplayValue = input;
         } else {
 
             let oldDisplayValue = this.currentDisplayValue;
-            let newDisplayValue = oldDisplayValue + currentInput;
-            this.currentDisplayValue = newDisplayValue;
+            let newDisplayValue = oldDisplayValue + input;
 
-            if (!doesTextFit(this.display)) {
-                this.currentDisplayValue = oldDisplayValue;
+            if (doesTextFit(this.display)) {
+                this.currentDisplayValue = newDisplayValue;
+
+            } else {
+                this.currentDisplayValue = oldDisplayValue
             }
+            console.log("old display value:" + oldDisplayValue + "      new display value:" + newDisplayValue);
         }
-
         this.display.textContent = this.currentDisplayValue;
     }
 
