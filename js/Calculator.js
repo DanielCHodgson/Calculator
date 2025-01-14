@@ -1,5 +1,3 @@
-import { doesTextFit, isStringNum } from "./utility.js";
-
 export default class Calculator {
 
     constructor(display, buttons) {
@@ -57,7 +55,7 @@ export default class Calculator {
 
         let newDisplayValue = this.displayedValue + input;
 
-        if (doesTextFit(this.display))
+        if (newDisplayValue.length <= 10)
             this.displayedValue = newDisplayValue;
 
         this.updateDisplay(this.displayedValue)
@@ -117,7 +115,7 @@ export default class Calculator {
 
         const num1 = parseFloat(input);
         const num2 = parseFloat(cachedValue);
-        
+
         const operations = {
             "plus": this.add,
             "minus": this.subtract,
