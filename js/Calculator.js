@@ -14,6 +14,13 @@ export default class Calculator {
 
     handleClick(input) {
 
+        if (this.displayedValue === "ERROR") {
+            console.log("clearing")
+            this.clear();
+
+        }
+            
+
         if (this.currentInput !== null) this.previousInput = this.currentInput;
 
         this.currentInput = input;
@@ -93,6 +100,9 @@ export default class Calculator {
     };
 
     divide(num1, num2) {
+        if (num1 === 0) {
+            return "ERROR";
+        }
         return num2 / num1;
     }
 
@@ -105,7 +115,6 @@ export default class Calculator {
         if (this.previousInput !== null &&
             this.previousInput.classList.contains("number") &&
             this.cachedOperator !== null) {
-
             this.operate(this.cachedOperator, this.displayedValue, this.cachedValue);
         }
     }
@@ -114,6 +123,8 @@ export default class Calculator {
 
         const num1 = parseFloat(input);
         const num2 = parseFloat(cachedValue);
+
+        console.log("input: " + num1 + "   operator: " + operator + "   cachedValue: " + cachedValue)
 
         const operations = {
             "plus": this.add,
@@ -124,11 +135,12 @@ export default class Calculator {
         };
 
         const result = operations[operator](num1, num2).toString();
-        if (result !== null) {
-            this.cachedOperator = null;
-            this.cachedValue = result;
-            this.updateDisplay(result);
-        }
-    }
 
+        console.log("result: " + result)
+
+        this.cachedValue = result;
+        this.cachedOperator = null;
+        this.displayedValue = result;
+        this.updateDisplay(result);
+    }
 }
