@@ -17,11 +17,10 @@ export default class Calculator {
         if (this.displayedValue === "ERROR") {
             console.log("clearing")
             this.clear();
-
         }
-            
 
-        if (this.currentInput !== null) this.previousInput = this.currentInput;
+        if (this.currentInput !== null) 
+            this.previousInput = this.currentInput;
 
         this.currentInput = input;
 
@@ -134,7 +133,12 @@ export default class Calculator {
             "percent": this.percentage,
         };
 
-        const result = operations[operator](num1, num2).toString();
+        let result = operations[operator](num1, num2).toString();
+
+        if (result.length > 10) {
+            result = parseFloat(result);
+            result = result.toExponential(4).toString();
+        }
 
         console.log("result: " + result)
 
