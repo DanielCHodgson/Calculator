@@ -36,16 +36,20 @@ export default class Calculator {
         }
 
         if (input.classList.contains("number")) {
-
-            if (this.previousInput !== null && this.previousInput.classList.contains("operator")) {
-                if (this.cachedValue === null) {
-                    this.cachedValue = this.displayedValue;
-                }
-                this.displayedValue = "";
-            }
-            this.enterInput(input.id);
+            this.handleNumberInput(input);
             return;
         }
+    }
+
+    handleNumberInput(input) {
+        if (this.previousInput !== null && this.previousInput.classList.contains("operator")) {
+            if (this.cachedValue === null) {
+                this.cachedValue = this.displayedValue;
+            }
+            this.displayedValue = "";
+        }
+        this.enterInput(input.id);
+
     }
 
     enterInput(input) {
@@ -65,7 +69,7 @@ export default class Calculator {
         this.display.textContent = value;
     }
 
-    clear() { 
+    clear() {
         this.previousInput = null;
         this.currentInput = null;
         this.displayedValue = "0";
@@ -76,29 +80,24 @@ export default class Calculator {
     }
 
     add(num1, num2) {
-        if (!isNaN(num1 || !isNaN(num2)))
-            return num1 + num2;
+        return num1 + num2;
     };
 
     subtract(num1, num2) {
-        if (!isNaN(num1 || !isNaN(num2)))
-            return num2 - num1;
+        return num2 - num1;
     };
 
 
     multiply(num1, num2) {
-        if (!isNaN(num1 || !isNaN(num2)))
-            return num1 * num2;
+        return num1 * num2;
     };
 
     divide(num1, num2) {
-        if (!isNaN(num1 || !isNaN(num2)))
-            return num2 / num1;
+        return num2 / num1;
     }
 
     percentage(num, percentage) {
-        if (!isNaN(num1 || !isNaN(percentage)))
-            return (num * percentage) / 100;
+        return (num * percentage) / 100;
     }
 
     equals() {
@@ -125,12 +124,11 @@ export default class Calculator {
         };
 
         const result = operations[operator](num1, num2).toString();
-        this.cachedOperator = null;
-        this.cachedValue = result;
-        this.updateDisplay(result);
-
-        console.log("input: " + num2 + "   " + "operator: " + operator + "   cached value: " + num1)
-        console.log("result: " + result)
+        if (result !== null) {
+            this.cachedOperator = null;
+            this.cachedValue = result;
+            this.updateDisplay(result);
+        }
     }
 
 }
