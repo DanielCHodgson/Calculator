@@ -2,66 +2,89 @@ import { doesTextFit, isStringNum } from "./utility.js";
 
 export default class Calculator {
 
-    display = null;
-    buttons = null;
-
-    currentOperator = null;
-    currentInput = null;
-    currentValue = "0";
-
     constructor(display, buttons) {
+        this.previousInput = null;
+        this.currentInput = null;
+        this.displayedValue = "0";
+        this.cachedValue = null;
+        this.cachedOperator = null;
+
         this.display = display;
         this.buttons = buttons;
         buttons.forEach(btn => btn.addEventListener("click", () => this.handleClick(btn)));
     }
 
-    handleClick(btn) {
+    handleClick(input) {
 
-        if (btn.classList.contains("operator")) this.currentOperator = btn.id;
-        if (btn.id === "clear") this.clear();
-        if (btn.id === "equals") this.equals();
-        if (btn.id === "decimal" &&
-            this.currentValue !== null &&
-            !this.currentValue.includes("."))
+        if (this.currentInput !== null) this.previousInput = this.currentInput;
+
+        this.currentInput = input;
+
+        if (input.classList.contains("operator")) {
+            this.cachedOperator = input.id;
+            return;
+        }
+        if (input.id === "clear") {
+            this.clear();
+            return;
+        }
+        if (input.id === "equals") {
+            this.equals();
+            return;
+        }
+        if (input.id === "decimal" && this.displayedValue !== null && !this.displayedValue.includes(".")) {
             this.enterInput(".");
-
-
-        if (isStringNum(btn.id)) {
-            /*
-        this.currentOperator
-            ? this.operate(btn.id, btn.id, this.currentValue)
-            : this.enterInput(btn.id);
-
-            */
-            this.enterInput(btn.id);
+            return;
         }
 
+        if (input.classList.contains("number")) {
 
+            if (this.previousInput !== null && this.previousInput.classList.contains("operator")) {
+                if (this.cachedValue === null) {
+                    this.cachedValue = this.displayedValue;
+                }
+                this.displayedValue = "";
+            }
+            this.enterInput(input.id);
+            return;
+        }
     }
-
 
     enterInput(input) {
-        if (this.currentValue == "0") this.currentValue = "";
-        let newDisplayValue = this.currentValue + input;
-        if (doesTextFit(this.display)) this.currentValue = newDisplayValue;
-        this.display.textContent = this.currentValue;
+
+        if (this.displayedValue == "0" && this.currentInput.id !== "decimal")
+            this.displayedValue = "";
+
+        let newDisplayValue = this.displayedValue + input;
+
+        if (doesTextFit(this.display))
+            this.displayedValue = newDisplayValue;
+
+        this.updateDisplay(this.displayedValue)
     }
 
-    clear() {
-        this.display.textContent = 0;
-        this.currentValue = "0";
+    updateDisplay(value) {
+        this.display.textContent = value;
+    }
+
+    clear() { 
+        this.previousInput = null;
+        this.currentInput = null;
+        this.displayedValue = "0";
+        this.cachedValue = null;
+        this.cachedOperator = null;
+
+        this.updateDisplay(this.displayedValue)
     }
 
     add(num1, num2) {
-
-        console.log(num1 + "  " + num2)
         if (!isNaN(num1 || !isNaN(num2)))
             return num1 + num2;
     };
 
     subtract(num1, num2) {
         if (!isNaN(num1 || !isNaN(num2)))
-            return num1 - num2;
+            return num2 - num1;
     };
 
 
@@ -72,7 +95,7 @@ export default class Calculator {
 
     divide(num1, num2) {
         if (!isNaN(num1 || !isNaN(num2)))
-            return num1 / num2;
+            return num2 / num1;
     }
 
     percentage(num, percentage) {
@@ -82,29 +105,34 @@ export default class Calculator {
 
     equals() {
 
+        if (this.previousInput !== null &&
+            this.previousInput.classList.contains("number") &&
+            this.cachedOperator !== null) {
+
+            this.operate(this.cachedOperator, this.displayedValue, this.cachedValue);
+        }
     }
 
-    operate(operator, input, currentValue) {
+    operate(operator, input, cachedValue) {
 
+        const num1 = parseFloat(input);
+        const num2 = parseFloat(cachedValue);
+        
+        const operations = {
+            "plus": this.add,
+            "minus": this.subtract,
+            "multiply": this.multiply,
+            "divide": this.divide,
+            "percent": this.percentage,
+        };
 
-        switch (operator) {
-            case "plus":
+        const result = operations[operator](num1, num2).toString();
+        this.cachedOperator = null;
+        this.cachedValue = result;
+        this.updateDisplay(result);
 
-                break;
-            case "minus":
-
-                break;
-            case "multiply":
-
-                break;
-            case "divide":
-
-                break;
-            case "percent":
-
-                break;
-        }
-
+        console.log("input: " + num2 + "   " + "operator: " + operator + "   cached value: " + num1)
+        console.log("result: " + result)
     }
 
 }
