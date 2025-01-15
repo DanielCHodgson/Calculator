@@ -19,10 +19,15 @@ export default class Calculator {
             this.clear();
         }
 
-        if (this.currentInput !== null) 
+        if (this.currentInput !== null)
             this.previousInput = this.currentInput;
 
         this.currentInput = input;
+
+        if (input.id === "sign") {
+            this.handleSignInput();
+            return;
+        }
 
         if (input.classList.contains("operator")) {
             this.cachedOperator = input.id;
@@ -44,6 +49,20 @@ export default class Calculator {
         if (input.classList.contains("number")) {
             this.handleNumberInput(input);
             return;
+        }
+    }
+
+
+    handleSignInput() {
+        if (this.displayedValue !== "0") {
+            if (this.displayedValue.charAt(0) === "-") {
+                let newStr = this.displayedValue.slice(1);
+                this.displayedValue = newStr;
+                this.updateDisplay(this.displayedValue);
+            } else {
+                this.displayedValue = "-" + this.displayedValue;
+                this.updateDisplay(this.displayedValue);
+            }
         }
     }
 
@@ -145,6 +164,13 @@ export default class Calculator {
         this.cachedValue = result;
         this.cachedOperator = null;
         this.displayedValue = result;
+        this.displayFormattedResult(result);
+    }
+
+
+
+    displayFormattedResult(result) {
+
         this.updateDisplay(result);
     }
 }
