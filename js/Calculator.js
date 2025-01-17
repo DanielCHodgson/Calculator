@@ -11,44 +11,36 @@ export default class Calculator {
 
         this.display = display;
         this.buttons = buttons;
-        
+
         new CalculatorClickHandler(this);
     }
 
 
     handleSignInput() {
         if (this.displayedValue !== "0") {
-            if (this.displayedValue.charAt(0) === "-") {
-                this.displayedValue = this.displayedValue.slice(1);
-            } else {
-                this.displayedValue = "-" + this.displayedValue;
-            }
+            this.displayedValue = this.displayedValue.charAt(0) === "-"
+                ? this.displayedValue.slice(1)
+                : "-" + this.displayedValue;
+
             this.updateDisplay(this.displayedValue);
         }
     }
 
     handleNumberInput(input) {
-        if (this.previousInput !== null && this.previousInput.classList.contains("operator")) {
-            if (this.cachedValue === null) {
-                this.cachedValue = this.displayedValue;
-            }
+        if (this.previousInput?.classList.contains("operator")) {
+            this.cachedValue = this.cachedValue ?? this.displayedValue;
             this.displayedValue = "";
         }
         this.enterInput(input.id);
-
     }
 
     enterInput(input) {
-
-        if (this.displayedValue == "0" && this.currentInput.id !== "decimal")
+        if (this.displayedValue === "0" && input !== "decimal")
             this.displayedValue = "";
 
-        let newDisplayValue = this.displayedValue + input;
-
-        if (newDisplayValue.length <= 10)
-            this.displayedValue = newDisplayValue;
-
-        this.updateDisplay(this.displayedValue)
+        const newDisplayValue = this.displayedValue + input;
+        this.displayedValue = newDisplayValue.length <= 10 ? newDisplayValue : this.displayedValue;
+        this.updateDisplay(this.displayedValue);
     }
 
     updateDisplay(value) {
@@ -61,7 +53,6 @@ export default class Calculator {
         this.displayedValue = "0";
         this.cachedValue = null;
         this.cachedOperator = null;
-
         this.updateDisplay(this.displayedValue)
     }
 
@@ -116,8 +107,7 @@ export default class Calculator {
         let result = operations[operator](num1, num2).toString();
 
         if (result.length > 10) {
-            result = parseFloat(result);
-            result = result.toExponential(4).toString();
+            result = parseFloat(result).toExponential(4).toString();
         }
 
         console.log("result: " + result)
@@ -127,7 +117,6 @@ export default class Calculator {
         this.displayedValue = result;
         this.displayFormattedResult(result);
     }
-
 
 
     displayFormattedResult(result) {
