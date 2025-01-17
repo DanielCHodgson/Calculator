@@ -25,7 +25,7 @@ export default class CalculatorClickHandler {
       }
 
       if (input.classList.contains("operator")) {
-         calculator.cachedOperator = input.id;
+         calculator.handleOperatorInput();
          return;
       }
       if (input.id === "clear") {

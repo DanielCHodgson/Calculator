@@ -1,0 +1,65 @@
+export default class CalculatorKeyHandler {
+
+    constructor(calculator) {
+        this.calculator = calculator;
+        this.handleKeys = this.handleKeys.bind(this);
+        this.initialize();
+    }
+
+    initialize() {
+        document.addEventListener('keydown', this.handleKeys);
+    }
+
+    handleKeys(event) {
+        if (event.key >= '0' && event.key <= '9') {
+            this.handleNumber(event.key);
+        }
+
+    
+        switch (event.key) {
+            case '+':
+                this.handleOperator('+');
+                break;
+            case '-':
+                this.handleOperator('-');
+                break;
+            case '*':
+                this.handleOperator('*');
+                break;
+            case '/':
+                this.handleOperator('/');
+                break;
+            case '=':
+                this.handleEquals();
+                break;
+            case '.':
+                this.handleDecimal();
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleNumber(key) {
+        console.log(`Number key pressed: ${key}`);
+        this.calculator.addToDisplay(key);
+    }
+
+    handleOperator(operator) {
+        console.log(`${operator} operator pressed`);
+        this.calculator.addOperator(operator); 
+    }
+
+    handleEquals() {
+        console.log('Equals operator (=) pressed');
+        this.calculator.calculateResult();
+    }
+
+
+    handleDecimal() {
+        console.log('Decimal point (.) pressed');
+        this.calculator.addDecimal(); 
+    }
+
+
+}

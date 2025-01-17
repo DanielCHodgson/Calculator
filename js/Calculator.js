@@ -16,8 +16,12 @@ export default class Calculator {
     }
 
 
+    handleOperatorInput() {
+        this.cachedOperator = input.id;
+    }
+
     handleSignInput() {
-        if (this.displayedValue !== "0") {
+        if (this.displayedValue !== "0" && this.previousInput.classList.contains("number")) {
             this.displayedValue = this.displayedValue.charAt(0) === "-"
                 ? this.displayedValue.slice(1)
                 : "-" + this.displayedValue;
