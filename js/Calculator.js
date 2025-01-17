@@ -1,3 +1,5 @@
+import CalculatorClickHandler from "./CalculatorClickHandler.js";
+
 export default class Calculator {
 
     constructor(display, buttons) {
@@ -9,60 +11,19 @@ export default class Calculator {
 
         this.display = display;
         this.buttons = buttons;
-        buttons.forEach(btn => btn.addEventListener("click", () => this.handleClick(btn)));
-    }
-
-    handleClick(input) {
-
-        if (this.displayedValue === "ERROR") {
-            console.log("clearing")
-            this.clear();
-        }
-
-        if (this.currentInput !== null)
-            this.previousInput = this.currentInput;
-
-        this.currentInput = input;
-
-        if (input.id === "sign") {
-            this.handleSignInput();
-            return;
-        }
-
-        if (input.classList.contains("operator")) {
-            this.cachedOperator = input.id;
-            return;
-        }
-        if (input.id === "clear") {
-            this.clear();
-            return;
-        }
-        if (input.id === "equals") {
-            this.equals();
-            return;
-        }
-        if (input.id === "decimal" && this.displayedValue !== null && !this.displayedValue.includes(".")) {
-            this.enterInput(".");
-            return;
-        }
-
-        if (input.classList.contains("number")) {
-            this.handleNumberInput(input);
-            return;
-        }
+        
+        new CalculatorClickHandler(this);
     }
 
 
     handleSignInput() {
         if (this.displayedValue !== "0") {
             if (this.displayedValue.charAt(0) === "-") {
-                let newStr = this.displayedValue.slice(1);
-                this.displayedValue = newStr;
-                this.updateDisplay(this.displayedValue);
+                this.displayedValue = this.displayedValue.slice(1);
             } else {
                 this.displayedValue = "-" + this.displayedValue;
-                this.updateDisplay(this.displayedValue);
             }
+            this.updateDisplay(this.displayedValue);
         }
     }
 
