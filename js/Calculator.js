@@ -27,13 +27,13 @@ export default class Calculator {
             this.previousInput = this.currentInput;
 
         this.currentInput = input;
-
-        
-        console.log("prevInput: " + this.previousInput + 
+        /*
+            console.log("prevInput: " + this.previousInput + 
                     "  curInput: " + this.currentInput + 
                     "   displayedValue: " + this.displayedValue + 
                     "  cachedValue: " + this.cachedValue + 
                     "  cachedOperator: " + this.cachedOperator);
+        */
     }
 
 
@@ -64,7 +64,7 @@ export default class Calculator {
     }
 
     enterInput(input) {
-        if (this.displayedValue === "0" && input !== "decimal")
+        if (this.displayedValue === "0" && input !== ".")
             this.displayedValue = "";
 
         const newDisplayValue = this.displayedValue + input;
@@ -139,7 +139,7 @@ export default class Calculator {
 
         //console.log("result: " + result)
 
-        this.cachedValue = result;
+        this.cachedValue = null;
         this.cachedOperator = null;
         this.displayedValue = result;
         this.displayFormattedResult(result);
