@@ -27,6 +27,13 @@ export default class Calculator {
             this.previousInput = this.currentInput;
 
         this.currentInput = input;
+
+        
+        console.log("prevInput: " + this.previousInput + 
+                    "  curInput: " + this.currentInput + 
+                    "   displayedValue: " + this.displayedValue + 
+                    "  cachedValue: " + this.cachedValue + 
+                    "  cachedOperator: " + this.cachedOperator);
     }
 
 
@@ -37,7 +44,7 @@ export default class Calculator {
     }
 
     handleSignInput() {
-        if (this.displayedValue !== "0" && this.inputIsNumber(this.previousInput)) {
+        if (this.displayedValue !== "0") {
             this.displayedValue = this.displayedValue.charAt(0) === "-"
                 ? this.displayedValue.slice(1)
                 : "-" + this.displayedValue;
@@ -114,7 +121,7 @@ export default class Calculator {
         const num1 = parseFloat(input);
         const num2 = parseFloat(cachedValue);
 
-        console.log("input: " + num1 + "   operator: " + operator + "   cachedValue: " + cachedValue)
+        //console.log("input: " + num1 + "   operator: " + operator + "   cachedValue: " + cachedValue)
 
         const operations = {
             "plus": this.add,
@@ -130,7 +137,7 @@ export default class Calculator {
             result = parseFloat(result).toExponential(4).toString();
         }
 
-        console.log("result: " + result)
+        //console.log("result: " + result)
 
         this.cachedValue = result;
         this.cachedOperator = null;
@@ -139,7 +146,7 @@ export default class Calculator {
     }
 
     isOperator(input) {
-        const operators = ["plus", "minus", "multiply", "divide", "percent"];
+        const operators = ["plus", "minus", "multiply", "divide", "percent",];
         return operators.includes(input);
     }
 
@@ -148,7 +155,6 @@ export default class Calculator {
     }
 
     displayFormattedResult(result) {
-
         this.updateDisplay(result);
     }
 }
