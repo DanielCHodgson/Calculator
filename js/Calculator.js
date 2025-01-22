@@ -10,6 +10,8 @@ export default class Calculator {
         this.cachedValue = null;
         this.cachedOperator = null;
 
+        this.justOperated = false;
+
         this.display = display;
         this.buttons = buttons;
 
@@ -39,15 +41,21 @@ export default class Calculator {
 
     handleOperatorInput(input) {
 
-        this.equals(this.cachedOperator, this.displayedValue, this.cachedValue);
+        if (!this.justOperated)
+            this.equals(this.cachedOperator, this.displayedValue, this.cachedValue);
+        this.justOperated = false;
         this.cachedOperator = input;
     }
 
     handleDecimalInput() {
+
+        if (this.justOperated) {
+            this.clear();
+        }
+
         if (this.displayedValue !== null && !this.displayedValue.includes(".")) {
             this.enterInput(".");
-         }
-
+        }
     }
 
     handleSignInput() {
@@ -61,6 +69,11 @@ export default class Calculator {
     }
 
     handleNumberInput(input) {
+
+        if (this.justOperated) {
+            this.clear();
+        }
+
         if (this.previousInput !== null) {
             if (this.isOperator(this.previousInput)) {
                 this.cachedValue = this.displayedValue;
@@ -84,11 +97,14 @@ export default class Calculator {
     }
 
     clear() {
+
+        console.log("cleared!")
         this.previousInput = null;
         this.currentInput = null;
         this.displayedValue = "0";
         this.cachedValue = null;
         this.cachedOperator = null;
+        this.justOperated = false;
         this.updateDisplay(this.displayedValue)
     }
 
@@ -128,8 +144,6 @@ export default class Calculator {
         const num1 = parseFloat(input);
         const num2 = parseFloat(cachedValue);
 
-        //console.log("input: " + num1 + "   operator: " + operator + "   cachedValue: " + cachedValue)
-
         const operations = {
             "plus": this.add,
             "minus": this.subtract,
@@ -144,12 +158,14 @@ export default class Calculator {
             result = parseFloat(result).toExponential(4).toString();
         }
 
-        //console.log("result: " + result)
-
-        this.cachedValue = null;
         this.cachedOperator = null;
+        this.cachedValue = null;
         this.displayedValue = result;
-        this.displayFormattedResult(result);
+        this.updateDisplay(result);
+        this.justOperated = true;
+
+        console.log("cachedValue: " + cachedValue +  "   operator: " + operator + "   input: " + num1)
+        console.log("result: " + result);
     }
 
     isOperator(input) {
@@ -161,7 +177,4 @@ export default class Calculator {
         return input >= "0" && input <= '9';
     }
 
-    displayFormattedResult(result) {
-        this.updateDisplay(result);
-    }
 }
