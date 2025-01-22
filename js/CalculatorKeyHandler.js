@@ -10,12 +10,30 @@ export default class CalculatorKeyHandler {
         document.addEventListener('keydown', this.handleKeys);
     }
 
+
+    mapKeyToID(key) {
+
+        const keys = {
+           "+" : "plus",
+           "-" : "minus",
+           "*" : "multiply",
+           "/" : "divide",
+           "%" : "percent",
+        };
+
+        return keys[key];
+    }
+
+
     handleKeys(event) {
+
+        let calculator = this.calculator;
+        calculator.loadInput(input);
+
         if (event.key >= '0' && event.key <= '9') {
             this.handleNumber(event.key);
         }
 
-    
         switch (event.key) {
             case '+':
                 this.handleOperator('+');
@@ -41,24 +59,22 @@ export default class CalculatorKeyHandler {
     }
 
     handleNumber(key) {
-        console.log(`Number key pressed: ${key}`);
-        this.calculator.addToDisplay(key);
+        this.calculator.enterInput(key);
     }
 
     handleOperator(operator) {
-        console.log(`${operator} operator pressed`);
-        this.calculator.addOperator(operator); 
+        calculator.handleOperatorInput();
     }
 
     handleEquals() {
-        console.log('Equals operator (=) pressed');
         this.calculator.calculateResult();
     }
 
-
     handleDecimal() {
-        console.log('Decimal point (.) pressed');
-        this.calculator.addDecimal(); 
+        if (input.id === "decimal" && calculator.displayedValue !== null && !calculator.displayedValue.includes(".")) {
+            calculator.enterInput(".");
+            return;
+         }
     }
 
 

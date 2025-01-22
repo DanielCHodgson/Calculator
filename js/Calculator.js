@@ -1,4 +1,5 @@
 import CalculatorClickHandler from "./CalculatorClickHandler.js";
+import CalculatorKeyHandler from "./CalculatorKeyHandler.js";
 
 export default class Calculator {
 
@@ -13,15 +14,30 @@ export default class Calculator {
         this.buttons = buttons;
 
         new CalculatorClickHandler(this);
+        new CalculatorKeyHandler(this);
     }
 
 
-    handleOperatorInput() {
-        this.cachedOperator = input.id;
+    registerInput(input) {
+
+        if (this.displayedValue === "ERROR")
+            this.clear();
+
+        if (this.currentInput !== null)
+            this.previousInput = this.currentInput;
+
+        this.currentInput = input;
+    }
+
+
+    handleOperatorInput(input) {
+
+        this.equals(this.cachedOperator, this.displayedValue, this.cachedValue);
+        this.cachedOperator = input;
     }
 
     handleSignInput() {
-        if (this.displayedValue !== "0" && this.previousInput.classList.contains("number")) {
+        if (this.displayedValue !== "0" && this.inputIsNumber(this.previousInput)) {
             this.displayedValue = this.displayedValue.charAt(0) === "-"
                 ? this.displayedValue.slice(1)
                 : "-" + this.displayedValue;
@@ -31,11 +47,13 @@ export default class Calculator {
     }
 
     handleNumberInput(input) {
-        if (this.previousInput?.classList.contains("operator")) {
-            this.cachedValue = this.cachedValue ?? this.displayedValue;
-            this.displayedValue = "";
+        if (this.previousInput !== null) {
+            if (this.isOperator(this.previousInput)) {
+                this.cachedValue = this.displayedValue;
+                this.displayedValue = "";
+            }
         }
-        this.enterInput(input.id);
+        this.enterInput(input);
     }
 
     enterInput(input) {
@@ -86,9 +104,7 @@ export default class Calculator {
 
     equals() {
 
-        if (this.previousInput !== null &&
-            this.previousInput.classList.contains("number") &&
-            this.cachedOperator !== null) {
+        if (this.cachedOperator !== null && this.displayedValue !== null && this.cachedValue !== null) {
             this.operate(this.cachedOperator, this.displayedValue, this.cachedValue);
         }
     }
@@ -122,6 +138,14 @@ export default class Calculator {
         this.displayFormattedResult(result);
     }
 
+    isOperator(input) {
+        const operators = ["plus", "minus", "multiply", "divide", "percent"];
+        return operators.includes(input);
+    }
+
+    inputIsNumber(input) {
+        return input >= "0" && input <= '9';
+    }
 
     displayFormattedResult(result) {
 

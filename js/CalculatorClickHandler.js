@@ -9,15 +9,17 @@ export default class CalculatorClickHandler {
 
       let calculator = this.calculator;
 
-      if (calculator.displayedValue === "ERROR") {
-         console.log("clearing")
-         calculator.clear();
+      calculator.registerInput(input.id);
+
+      if (input.classList.contains("number")) {
+         calculator.handleNumberInput(input.id);
+         return;
       }
 
-      if (calculator.currentInput !== null)
-         calculator.previousInput = calculator.currentInput;
-
-      calculator.currentInput = input;
+      if (input.id === "decimal" && calculator.displayedValue !== null && !calculator.displayedValue.includes(".")) {
+         calculator.enterInput(".");
+         return;
+      }
 
       if (input.id === "sign") {
          calculator.handleSignInput();
@@ -25,24 +27,17 @@ export default class CalculatorClickHandler {
       }
 
       if (input.classList.contains("operator")) {
-         calculator.handleOperatorInput();
+         calculator.handleOperatorInput(input.id);
          return;
       }
-      if (input.id === "clear") {
-         calculator.clear();
-         return;
-      }
+
       if (input.id === "equals") {
          calculator.equals();
          return;
       }
-      if (input.id === "decimal" && calculator.displayedValue !== null && !calculator.displayedValue.includes(".")) {
-         calculator.enterInput(".");
-         return;
-      }
 
-      if (input.classList.contains("number")) {
-         calculator.handleNumberInput(input);
+      if (input.id === "clear") {
+         calculator.clear();
          return;
       }
    }
