@@ -16,8 +16,8 @@ export default class CalculatorClickHandler {
          return;
       }
 
-      if (input.id === "decimal" && calculator.displayedValue !== null && !calculator.displayedValue.includes(".")) {
-         calculator.enterInput(".");
+      if (input.id === "decimal") {
+         calculator.handleDecimalInput();
          return;
       }
 

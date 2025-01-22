@@ -44,7 +44,7 @@ export default class CalculatorKeyHandler {
                     this.calculator.equals();
                     break;
                 case ".":
-                    this.handleDecimal();
+                    this.calculator.handleDecimalInput();
                     break;
                 case "Backspace":
                     this.calculator.clear();

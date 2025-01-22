@@ -43,6 +43,13 @@ export default class Calculator {
         this.cachedOperator = input;
     }
 
+    handleDecimalInput() {
+        if (this.displayedValue !== null && !this.displayedValue.includes(".")) {
+            this.enterInput(".");
+         }
+
+    }
+
     handleSignInput() {
         if (this.displayedValue !== "0") {
             this.displayedValue = this.displayedValue.charAt(0) === "-"
